@@ -7,6 +7,6 @@ namespace DoubleLinkedList
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-        }ssss
+        }wowkdowko
     }
 }
