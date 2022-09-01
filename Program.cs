@@ -6,7 +6,12 @@ namespace DoubleLinkedList
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-        }wowkdowko
+            DoubleLinkedList<int> doubleLinkedList = new DoubleLinkedList<int>();
+
+            doubleLinkedList.AddFirst(5);
+            doubleLinkedList.AddFirst(10);
+            doubleLinkedList.AddLast(20);   
+            ;
+        }
     }
 }
