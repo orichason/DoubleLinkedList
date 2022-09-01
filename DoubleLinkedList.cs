@@ -7,9 +7,9 @@ namespace DoubleLinkedList
         public int Count { get; set; }
 
 
-        public void AddFirst (T value)
+        public void AddFirst(T value)
         {
-            if(Head == null)
+            if (Head == null)
             {
                 Head = new Node<T>(value);
             }
@@ -25,53 +25,111 @@ namespace DoubleLinkedList
             Count++;
         }
 
-        public void AddLast (T value)
+        public void AddLast(T value)
         {
-            if(Head == null)
+            if (Head == null)
             {
                 Head = new Node<T>(value);
             }
 
             else
             {
-                Node<T> NodeToInsert = new Node<T>(value);
-                Head.Previous = NodeToInsert;
-                NodeToInsert.Next = Head;
+                if (Head.Next == null)
+                {
+                    Node<T> NodeToInsert = new Node<T>(value);
+                    Head.Next = NodeToInsert;
+                    NodeToInsert.Next = Head;
+                    Head.Previous = NodeToInsert;
+                    NodeToInsert.Previous = Head;
+                }
+                else
+                {
+                    Node<T> NodeToInsert = new Node<T>(value);
+                    Head.Previous.Next = NodeToInsert;
+                    NodeToInsert.Next = Head;
+                    NodeToInsert.Previous = Head.Previous.Previous;
+                    Head.Previous = NodeToInsert;
+                }
+
             }
             Count++;
         }
 
-        public void AddBefore (Node<T> node, T value)
+        public void AddBefore(Node<T> node, T value)
         {
             Node<T> Cursor = Head;
 
-            while (Head.Next != Head)
+            while (Cursor != node)
             {
-                if(Cursor == node)
-                {
-                    Node<T> NewNode = new Node<T>(value);
-                    Cursor.Previous = NewNode;
-                    NewNode.Next = Cursor;
-                    Count++;
-                }
+                Cursor = Cursor.Next;
             }
+
+            Node<T> OldPrevious = Cursor.Previous;
+
+            Node<T> NewNode = new Node<T>(value);
+            Cursor.Previous = NewNode;
+            NewNode.Next = Cursor;
+            OldPrevious.Next = NewNode;
+            NewNode.Previous = OldPrevious;
+            Count++;
 
         }
 
-        public void AddAfter (Node<T> node, T value)
+        public void AddAfter(Node<T> node, T value)
         {
             Node<T> Cursor = Head;
 
-            while (Head.Next != Head)
+            while (Cursor != node)
             {
-                if (Cursor == node)
-                {
-                    Node<T> NewNode = new Node<T>(value);
-                    NewNode.Next = node.Next;
-                    node.Next = NewNode;
-                    Count++;
-                }
+                Cursor = Cursor.Next;
             }
+
+            Node<T> OldNext = Cursor.Next;
+
+            Node<T> NewNode = new Node<T>(value);
+            Cursor.Next = NewNode;
+            NewNode.Previous = Cursor;
+            OldNext.Next = NewNode;
+            NewNode.Next = OldNext;
+            Count++;
+        }
+
+        public Node<T> Search(T value)
+        {
+            Node<T> cursor = Head;
+
+            while (cursor != null)
+            {
+                if (cursor.Value.Equals(value))
+                {
+                    return cursor;
+                }
+
+                cursor = cursor.Next;
+            }
+
+            return null;
+        }
+
+        public bool RemoveFirst()
+        {
+            if (Head == null)
+            {
+                return false;
+            }
+
+            else
+            {
+                if (Head.Next == null)
+                {
+                    Head = null;
+                }
+                Head.Next.Previous = Head.Previous;
+                Head = Head.Next;
+                Count--;
+            }
+
+            return true;
         }
     }
 }
