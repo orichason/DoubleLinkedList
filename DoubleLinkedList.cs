@@ -47,7 +47,7 @@ namespace DoubleLinkedList
                     Node<T> NodeToInsert = new Node<T>(value);
                     Head.Previous.Next = NodeToInsert;
                     NodeToInsert.Next = Head;
-                    NodeToInsert.Previous = Head.Previous.Previous;
+                    NodeToInsert.Previous = Head.Previous;
                     Head.Previous = NodeToInsert;
                 }
 
@@ -96,16 +96,16 @@ namespace DoubleLinkedList
 
         public Node<T> Search(T value)
         {
-            Node<T> cursor = Head;
+            Node<T> Cursor = Head;
 
-            while (cursor != null)
+            while (Cursor != null)
             {
-                if (cursor.Value.Equals(value))
+                if (Cursor.Value.Equals(value))
                 {
-                    return cursor;
+                    return Cursor;
                 }
 
-                cursor = cursor.Next;
+                Cursor = Cursor.Next;
             }
 
             return null;
@@ -130,6 +130,64 @@ namespace DoubleLinkedList
             }
 
             return true;
+        }
+
+        public bool RemoveLast()
+        {
+            if (Head == null)
+            {
+                return false;
+            }
+
+            else
+            {
+
+                if(Head.Next == null)
+                {
+                    Head = null;
+                    return true;
+                }
+
+                Node<T> SecondToLast = Head.Previous.Previous;
+
+                SecondToLast.Next = Head;
+                Head.Previous = SecondToLast;
+                Count--;
+            }
+
+            return true;
+        }
+
+        public bool Remove(T value)
+        {
+            if (Head.Next == null && !Head.Value.Equals(value))
+            {
+                return false;
+            }
+
+            Node<T> Cursor = Head;
+
+            while (!Cursor.Value.Equals(value))
+            {
+             
+                Cursor = Cursor.Next;
+            }
+
+            Cursor.Previous.Next = Cursor.Next;
+            Cursor.Next.Previous = Cursor.Previous;
+            Count--;
+
+            return true;
+        }
+
+        public bool IsEmpty()
+        {
+            if(Head ==  null)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
